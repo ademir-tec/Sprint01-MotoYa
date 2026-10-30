@@ -1,0 +1,20 @@
+sequenceDiagram
+  actor P as Pasajero
+  participant UI as Presentación
+  participant CU as RideSearchUseCase
+  participant S as Adaptador OfferService
+  P->>UI: Buscar moto
+  UI->>CU: start(draft)
+  CU->>S: request(request)
+  S-->>CU: DriverOffer por stream
+  CU-->>UI: Estado con ofertas
+  P->>UI: Elegir conductor
+  UI->>CU: accept(driverId)
+  CU->>S: accept(offer)
+  alt Asignación confirmada
+    S-->>CU: AcceptedRide
+    CU-->>UI: Estado confirmado con viaje y PIN
+  else Servicio rechaza
+    S-->>CU: Error de aceptación
+    CU-->>UI: Fallo y búsqueda actualizada
+  end
