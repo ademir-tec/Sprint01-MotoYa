@@ -1,25 +1,34 @@
-# C4 - Nivel 1: contexto del sistema
+# Nivel 1: contexto del sistema
 
-**Alcance:** MotoYa como sistema completo. **Audiencia:** docente, responsables del negocio y usuarios. Las personas son actores; los bloques externos representan dependencias, sin detallar tecnologías internas.
+
+**Pregunta:** ¿quién usa MotoYa y con qué sistemas externos se relaciona?
+
+| Elemento | Tipo | Relación con MotoYa |
+|---|---|---|
+| Pasajero | Persona | Solicita, negocia y realiza viajes. |
+| Conductor | Persona | Responde y presta el servicio. |
+| Personal autorizado | Persona | Revisa y administra desde panel. |
+| MotoYa | Sistema | Coordina solicitudes, viajes y operación. |
+| Firebase | Plataforma externa | Aporta identidad, datos, archivos, funciones y avisos según configuración. |
+| Proveedores cartográficos | Sistemas externos | Proporcionan mapas, lugares y rutas. |
+| WhatsApp / mecanismo de compartir | Sistema externo | Permite comunicar datos del viaje. |
+| Mercado Pago | Integración externa de recarga | Disponible en código; activación y pagos reales requieren configuración. |
+
+No se incluye al proveedor como autoridad que decide reglas de negocio. El pago del viaje permanece entre pasajero y conductor.
+
+---
+
+[Volver al índice](../../README.md)
+
+## Diagrama
 
 ```mermaid
 flowchart LR
-  P[Pasajero] -->|Solicita, negocia y sigue viajes| M[MotoYa: plataforma de moto lineal en Huamanga]
-  C[Conductor] -->|Ofrece transporte y gestiona saldo| M
-  S[Agente de soporte] -->|Revisa registros, recargas y alertas| M
-  A[Administrador y dueño] -->|Supervisan y configuran| M
-  T[Contador opcional] -->|Consulta finanzas| M
-  M -->|Rutas y direcciones| G[Sistema externo de mapas]
-  M -->|Verificación de identidad| I[Proveedor de identidad]
-  M -->|Avisos push y SMS| N[Proveedor de notificaciones]
-  M -->|Compartir datos por acción del usuario| W[WhatsApp]
-  P -.->|Pago directo fuera de MotoYa| C
+  P[Pasajero] -->|Solicita recojo y negocia| M[MotoYa]
+  C[Conductor] -->|Responde y realiza viaje| M
+  E[Personal autorizado] -->|Administra y atiende| M
+  M -->|Identidad y servicios administrados| F[Firebase]
+  M -->|Mapas y rutas| R[Proveedores cartográficos]
+  M -->|Compartir datos del viaje| W[WhatsApp y sistema de compartir]
+  M -.->|Recarga integrada sujeta a configuración| MP[Mercado Pago]
 ```
-
-## Interpretación
-
-MotoYa registra la relación entre pasajero, conductor y viaje. El pago directo queda fuera de su frontera: efectivo, Yape y Plin son medios elegidos por las personas, no integraciones de cobro automático del sistema. La recarga del conductor se acredita después de verificación humana por soporte.
-
-El botón de emergencia facilita comunicación y crea una alerta, pero MotoYa no representa a los servicios de emergencia ni garantiza su intervención. La atención de soporte requiere personal disponible.
-
-**Siguiente vista:** [contenedores](nivel2-contenedores.md).
