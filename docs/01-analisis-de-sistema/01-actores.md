@@ -1,25 +1,18 @@
-# 01. Actores y permisos
+# Actores
 
-MotoYa diferencia identidad, modo de uso y autorización. Una persona conserva el mismo `usuarioId` al cambiar de modo. La aprobación del perfil conductor no crea una segunda cuenta.
 
-| Actor | Objetivo | Operaciones | Límite |
+| Actor | Objetivo | Acciones principales | Límite de responsabilidad |
 |---|---|---|---|
-| Pasajero | Encontrar transporte y viajar con seguridad | Solicitar, negociar, elegir conductor, compartir, SOS y calificar | Solo sus solicitudes y viajes |
-| Conductor | Recibir viajes y administrar su saldo | Registrar documentos, conectarse, ofertar, conducir, recargar | Registro aprobado, documentos vigentes y saldo suficiente salvo promoción |
-| Agente de soporte | Resolver la operación cotidiana | Revisar registros y recargas, atender SOS y reclamos | Suspensiones de hasta 3 días; consulta sensible vinculada a caso |
-| Administrador | Supervisar la operación | Gestionar agentes, zonas, sanciones y ajustes | Suspensiones de hasta 30 días; ajustes de hasta S/ 50 |
-| Dueño | Administrar el negocio | Tarifas, comisión, administradores, finanzas y sanciones permanentes | Toda acción sensible exige motivo, segundo factor y auditoría |
-| Contador, opcional | Revisar información financiera | Consultar y exportar reportes agregados | Sin modificación ni acceso a documentos o ubicaciones |
-| Servicio de mapas | Obtener direcciones, ruta y distancia | Google Maps Platform; respaldo propuesto GraphHopper/Photon | No decide precios ni permisos |
-| Autenticación y mensajería | Verificar cuentas y transmitir avisos | Firebase Auth, FCM y proveedor SMS | No sustituye el registro persistente del viaje o del SOS |
+| Pasajero | Conseguir transporte con recojo en el punto indicado, especialmente si está lejos de un paradero | Elegir origen y destino, proponer precio, consultar llegada, aceptar oferta, compartir y calificar | Opera sobre sus solicitudes y viajes y debe estar listo al recojo. |
+| Conductor | Realizar viajes | Registrarse, conectarse, responder, llegar, validar PIN y terminar | Requiere aprobación y elegibilidad; la ubicación desactivada impide operar conectado. |
+| Agente de soporte | Atender la operación | Revisar registros y recargas, atender SOS y reclamos | Actúa según permisos del servidor. |
+| Administrador | Supervisar operación | Gestionar personal y acciones operativas autorizadas | El rol no sustituye las comprobaciones por comando. |
+| Dueño | Administrar el negocio | Gestionar tarifas, campaña de lanzamiento, finanzas y equipo | Acceso mediante cuenta de personal y segundo factor. |
+| Contador opcional | Consultar finanzas | Consultar y exportar según permisos | Su habilitación depende de la configuración de roles. |
+| Servicios externos | Aportar capacidades técnicas | Identidad, mapas, rutas, archivos, avisos y pagos de recarga | No reemplazan las reglas propias de MotoYa. |
 
-## Reglas de autorización
+Una persona utiliza una cuenta para los modos pasajero y conductor. El perfil conductor necesita aprobación. Las cuentas del panel pertenecen al personal autorizado.
 
-- El usuario no cambia de modo con solicitud o viaje activo; al pasar a pasajero se desconecta como conductor.
-- Una sanción se aplica a la cuenta y afecta ambos modos.
-- El cliente no puede modificar saldo, aprobación, comisión, sanciones ni estados críticos por escritura directa.
-- El panel tiene cuentas independientes; no existe registro público de personal.
-- El chat se consulta por soporte solo con un reclamo o SOS asociado. La lectura de datos sensibles queda auditada.
-- Para resolver la ambigüedad de permisos de configuración, propongo reservar tarifa y comisión al dueño; el administrador gestiona parámetros operativos. Véase ADR-06.
+---
 
-Los roles se comprueban en el servidor en cada comando. Ocultar controles en la interfaz solo mejora la experiencia; no concede ni revoca permisos.
+[Volver al índice](../../README.md)
