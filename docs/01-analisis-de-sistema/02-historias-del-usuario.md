@@ -1,24 +1,24 @@
-# 02. Historias de usuario
+# Historias de usuario
 
-Las historias describen el producto. El Sprint 01 entrega su especificación; no declara estas funciones implementadas. P1 identifica el núcleo del MVP y P2 una ampliación posterior al flujo esencial.
 
-| ID | Historia | Criterio de aceptación verificable | Prioridad / requisito |
+| ID | Como… quiero… para… | Criterio de aceptación | Correspondencia |
 |---|---|---|---|
-| HU-01 | Como pasajero quiero verificar mi celular para utilizar una cuenta propia. | Dado un código válido y vigente, al confirmarlo se abre una sesión; un código vencido se rechaza y limita reintentos. | P1 / RF-P01, RF-P02 |
-| HU-02 | Como pasajero quiero elegir origen y destino para conocer una tarifa recomendada. | Con puntos dentro de cobertura, se devuelve ruta, distancia, vigencia y precio; fuera de cobertura no se crea solicitud. | P1 / RF-P04 a RF-P07 |
-| HU-03 | Como pasajero quiero comparar ofertas para elegir conductor y precio. | Al aceptar una oferta vigente se asigna un único conductor y se invalidan las otras; una aceptación concurrente devuelve conflicto. | P1 / RF-P08 a RF-P11 |
-| HU-04 | Como conductor quiero registrarme con documentos para acreditar mi identidad. | Un registro queda en revisión; no recibe solicitudes hasta su aprobación; una observación permite reenviar la versión corregida. | P1 / RF-C01 a RF-C05 |
-| HU-05 | Como conductor quiero responder solicitudes cercanas para realizar viajes. | Solo se reciben solicitudes elegibles; la contraoferta respeta pasos de S/ 0.50, máximo +S/ 3.00 y vence a los 45 s. | P1 / RF-C06 a RF-C08 |
-| HU-06 | Como pasajero quiero iniciar con PIN para reconocer mi viaje. | El conductor asignado ingresa el PIN correcto en Esperando; tres fallos alertan a soporte y bloquean nuevos intentos hasta resolución. | P1 / RF-P25, RF-C21; bloqueo propuesto |
-| HU-07 | Como conductor quiero registrar la llegada y espera para transparentar el recojo. | Llegué exige distancia de hasta 100 m; no presentado exige 3 min y hasta 30 m; no genera cobro. | P1 / RF-C18, RF-P23 |
-| HU-08 | Como conductor quiero terminar el viaje para registrar mi comisión. | Dos solicitudes de finalización del mismo viaje producen un solo movimiento; la promoción registra comisión cero. | P1 / RF-C13, RF-C09 |
-| HU-09 | Como conductor quiero recargar saldo para continuar trabajando. | Una recarga de al menos S/ 10 queda pendiente; solo la confirmación de soporte acredita y un comprobante duplicado no acredita de nuevo. | P1 / RF-C10, RF-S04 |
-| HU-10 | Como pasajero quiero compartir el viaje y pedir ayuda. | Compartir abre el flujo de WhatsApp; SOS persiste una alerta y muestra su estado de entrega; sin agente a los 2 min se escala. | P1 / RF-P14, RF-P15, RF-S27 |
-| HU-11 | Como agente quiero revisar casos con evidencia para resolverlos. | La consulta del chat exige caso asociado; la resolución registra actor, motivo y fecha. | P1 / RF-S05, RF-S11, RF-S20 |
-| HU-12 | Como usuario quiero alternar modos sin duplicar mi cuenta. | Con viaje activo se rechaza el cambio; sin viaje, conductor aprobado puede cambiar y se desconecta al volver a pasajero. | P1 / RF-A01, RF-A02 |
-| HU-13 | Como usuario quiero controlar mis datos. | La eliminación requiere autenticación reciente, informa la retención aplicable y crea solicitud trazable de atención. | P1 / RF-P32, RF-A09 |
-| HU-14 | Como usuario quiero calificar el servicio. | Solo los participantes de un viaje terminado pueden emitir una reseña cada uno, de 1 a 5 estrellas. | P2 / RF-P17, RF-C14 |
+| HU-01 | Como pasajero quiero verificar mi celular para acceder a mi cuenta. | Un código válido permite continuar; se informan errores y vencimiento. La demo independiente utiliza un código de prueba. | RF-P01, RF-P02 |
+| HU-02 | Como pasajero quiero indicar origen y destino para consultar una recomendación. | La app muestra ruta y precio preliminar; un fallo de ruta se comunica al usuario. La validación real no debe confundirse con la simulación. | RF-P04 a RF-P07 |
+| HU-03 | Como pasajero quiero comparar ofertas para elegir conductor. | Solo una asignación confirmada abre el viaje; un rechazo mantiene la búsqueda. | RF-P08 a RF-P11 |
+| HU-04 | Como conductor quiero enviar documentos para ser evaluado. | El registro entra a revisión y permite corregir observaciones. | RF-C01 a RF-C05 |
+| HU-05 | Como conductor quiero responder solicitudes cercanas para trabajar. | Solo puedo operar si cumplo las condiciones; desactivar ubicación me desconecta y bloquea la aceptación. | RF-C06 a RF-C08; ampliación GPS |
+| HU-06 | Como pasajero quiero utilizar un PIN para identificar mi viaje. | El inicio real exige validar el PIN en el servidor; el conductor no lo obtiene por lectura del documento privado. | RF-P25, RF-C21 |
+| HU-07 | Como conductor quiero registrar mi llegada para informar al pasajero. | La implementación real comprueba estado y distancia antes de registrar la llegada. | RF-C18, RF-P23 |
+| HU-08 | Como conductor quiero cerrar el viaje para registrar el resultado. | El backend realiza cierre y comisión de forma transaccional; los reintentos no deben duplicar el cargo. | RF-C13, RF-C09 |
+| HU-09 | Como conductor quiero consultar y recargar mi saldo para seguir operando. | Accedo desde el perfil al saldo y movimientos; una recarga manual requiere confirmación autorizada. | RF-C10, RF-S04 |
+| HU-10 | Como pasajero quiero compartir mi viaje y pedir ayuda. | Compartir abre las opciones disponibles; SOS se registra mediante el servicio seleccionado. El escalamiento automático requiere validación adicional. | RF-P14, RF-P15, RF-S27 |
+| HU-11 | Como agente quiero consultar y resolver casos para atender problemas. | El panel ejecuta operaciones mediante contratos y comandos autorizados. | RF-S05, RF-S11, RF-S20 |
+| HU-12 | Como usuario quiero alternar modos para usar la misma cuenta. | El cambio respeta el estado operativo y no permite actuar simultáneamente en viajes incompatibles. | RF-A01, RF-A02 |
+| HU-13 | Como usuario quiero solicitar la eliminación de mi cuenta para controlar mis datos. | Debe existir un flujo autorizado, política de retención y endpoint disponible; su funcionamiento productivo queda pendiente de verificación. | RF-P32, RF-A09 |
+| HU-14 | Como usuario quiero calificar el viaje para expresar mi experiencia. | Solo corresponde una reseña por participante y viaje terminado en el flujo real. | RF-P17, RF-C14 |
+| HU-15 nueva | Como pasajero que vive lejos de un paradero quiero solicitar una moto desde mi ubicación para evitar desplazarme a buscarla y aprovechar el tiempo mientras llega. | Puedo indicar un punto de recojo dentro de cobertura y, tras la asignación, consultar al conductor y su llegada estimada para estar listo al arribo. | RF-P04 a RF-P07, RF-P08 a RF-P11 y seguimiento del viaje |
 
-## Ejemplo de aceptación: recarga duplicada
+---
 
-**Dado** que una recarga ya fue confirmada, **cuando** dos agentes intentan confirmar otra solicitud con la misma identidad de comprobante, **entonces** el saldo cambia una sola vez y la segunda operación informa duplicidad, conservando la auditoría. Una captura por sí sola no prueba el abono: el agente lo contrasta con el estado de cuenta.
+[Volver al índice](../../README.md)
