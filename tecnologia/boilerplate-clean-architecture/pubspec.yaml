@@ -1,0 +1,6 @@
+name: motoya_clean_example
+description: Ejemplo académico simplificado de selección de ofertas de MotoYa.
+version: 1.0.0
+publish_to: none
+environment:
+  sdk: '>=3.0.0 <4.0.0'
