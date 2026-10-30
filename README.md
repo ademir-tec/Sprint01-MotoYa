@@ -108,6 +108,16 @@ El recojo corresponde a una solicitud inmediata desde un punto acordado. La posi
 | Tecnología | [Ejemplo ejecutable de Arquitectura Limpia en Dart](tecnologia/boilerplate-clean-architecture/README.md) |
 | Diagrama | [Esquema interactivo de las capas](img/arquitectura-limpia.html) |
 
+## Diagrama general de MotoYa
+
+![Diagrama general de MotoYa: app, panel, backend y servicios Firebase](img/arquitectura-general-motoya.png)
+
+La app y el panel solicitan operaciones al backend en Cloud Functions. Firebase Auth identifica al usuario; Cloud Firestore almacena documentos y Cloud Storage conserva archivos. FCM permite enviar notificaciones. Los mapas y las rutas utilizan proveedores cartográficos, y Mercado Pago es una integración configurable para recargas.
+
+El esquema resume las relaciones principales. También existen accesos directos permitidos a Firestore, sujetos a sus reglas de seguridad. Las integraciones dependen de la configuración y el despliegue; la demostración puede utilizar servicios simulados. Actualmente el servidor todavía recibe los kilómetros calculados por el celular.
+
+[Abrir la imagen en tamaño completo](img/arquitectura-general-motoya.png).
+
 ## Publicación y datos
 
 La documentación describe código examinado localmente, servicios de demostración y pendientes. Este repositorio no acredita un despliegue productivo. El ejemplo de tecnología es didáctico y no es la app completa. No contiene claves, expedientes ni datos privados.
