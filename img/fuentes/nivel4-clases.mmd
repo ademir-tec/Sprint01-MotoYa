@@ -1,0 +1,15 @@
+classDiagram
+  class OfferService {
+    <<interface>>
+    +request(request) Stream
+    +updatePassengerOffer(offer) void
+    +accept(offer) Future
+    +cancel(reason) void
+  }
+  RideSearchController --> RideSearchUseCase : delega
+  RideSearchUseCase --> OfferService : utiliza
+  RideSearchUseCase --> RideSearchState : publica
+  OfferService <|.. FakeOfferService : implementa
+  OfferService <|.. FirebaseOfferService : implementa
+  OfferService ..> DriverOffer : emite
+  OfferService ..> AcceptedRide : devuelve
