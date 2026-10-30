@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "MotoYa · Dependencias de la app",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1300,
+      660
+    ]
+  },
+  "components": [
+    {
+      "id": "screens",
+      "type": "frontend",
+      "label": "Presentación",
+      "sublabel": "Pantallas y controladores",
+      "pos": [
+        45,
+        265
+      ],
+      "size": [
+        230,
+        90
+      ]
+    },
+    {
+      "id": "usecases",
+      "type": "backend",
+      "label": "Aplicación",
+      "sublabel": "RideSearchUseCase",
+      "pos": [
+        475,
+        265
+      ],
+      "size": [
+        240,
+        90
+      ]
+    },
+    {
+      "id": "contracts",
+      "type": "security",
+      "label": "Dominio",
+      "sublabel": "OfferService y modelos",
+      "pos": [
+        945,
+        265
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "adapters",
+      "type": "database",
+      "label": "Datos",
+      "sublabel": "Fake / FirebaseOfferService",
+      "pos": [
+        945,
+        65
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "wiring",
+      "type": "cloud",
+      "label": "Composición",
+      "sublabel": "Providers y selección LIVE",
+      "pos": [
+        475,
+        485
+      ],
+      "size": [
+        240,
+        90
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "screens",
+      "to": "usecases",
+      "label": "delega acciones"
+    },
+    {
+      "from": "usecases",
+      "to": "contracts",
+      "label": "usa contratos"
+    },
+    {
+      "from": "adapters",
+      "to": "contracts",
+      "label": "implementa",
+      "labelAt": [
+        1085,
+        205
+      ]
+    },
+    {
+      "from": "wiring",
+      "to": "usecases",
+      "label": "inyecta servicios"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Regla de dependencia",
+      "items": [
+        "Las flechas muestran dependencias de código.",
+        "Dominio y aplicación no importan Flutter ni Firebase."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Composición",
+      "items": [
+        "Selecciona adaptadores de datos y los entrega a la aplicación.",
+        "El caso de uso recibe OfferService, no una clase Firebase."
+      ]
+    }
+  ]
+}
