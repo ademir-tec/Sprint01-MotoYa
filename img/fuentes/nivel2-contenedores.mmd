@@ -1,0 +1,21 @@
+flowchart TB
+  subgraph M[MotoYa]
+    A[App Flutter]
+    P[Panel Flutter Web]
+    B[Backend Cloud Functions]
+    D[(Cloud Firestore)]
+    S[(Cloud Storage)]
+    I[Firebase Auth]
+  end
+  A -->|Autenticación| I
+  P -->|Autenticación| I
+  A -->|Comandos críticos en LIVE| B
+  P -->|Comandos autorizados| B
+  A -->|Lecturas y escrituras acotadas por reglas| D
+  P -->|Consultas según rol| D
+  A -->|Cargas restringidas| S
+  B -->|Transacciones| D
+  B -->|Acceso a archivos| S
+  B -->|Verifica identidad| I
+  A -->|Mapa, búsqueda y ruta actual| R[Proveedores de mapas y rutas]
+  B -.->|Recarga integrada configurable| MP[Mercado Pago]
