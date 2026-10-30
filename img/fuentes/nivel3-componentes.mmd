@@ -1,0 +1,12 @@
+flowchart TB
+  U[Presentación y navegación] --> O[Onboarding y sesión]
+  U --> L[Lugares y ubicación]
+  U --> Q[Búsqueda y ofertas]
+  U --> V[Viaje pasajero]
+  U --> C[Operación conductor]
+  U --> W[Perfil y billetera]
+  Q -->|Contrato| S[OfferService]
+  X[Composición] -->|Selecciona| F[FakeOfferService]
+  X -->|Selecciona| B[FirebaseOfferService]
+  F -.->|Implementa| S
+  B -.->|Implementa| S
