@@ -1,51 +1,30 @@
 # Alcance y plan del Sprint 01
 
 ## Objetivo
+Explicar y sustentar MotoYa con el problema de acceso al transporte en motolineal, los requisitos y la arquitectura implementada, siguiendo la organización académica de la docente.
 
-Definir una base técnica coherente y trazable para construir MotoYa, relacionando necesidades del usuario, atributos de calidad, decisiones, componentes y diseño interno.
-
-## Entregables documentales
-
-| Trabajo | Resultado | Criterio de cierre |
+| Entrega | Resultado | Criterio de cierre |
 |---|---|---|
-| Contextualizar MotoYa | README y actores | Identifica curso, docente, autor, problema, alcance y límites |
-| Analizar el sistema | Historias, requisitos, restricciones y calidad | IDs trazables y criterios observables |
-| Diseñar arquitectura | Estilo, enfoque, componentes y ADR | Decisiones justificadas y dependencias claras |
-| Diseñar internamente | Módulo Viajes, patrones y SOLID | Reglas aisladas de proveedores y cierre transaccional |
-| Comunicar por niveles | Cuatro vistas C4 y secuencia | Contexto, contenedores, componentes y código consistentes |
-| Preparar verificación | Datos, estados, reglas y matriz de pruebas | Casos límite y riesgos pendientes explícitos |
+| Análisis | Ocho documentos | Actores, historias, requisitos, atributos, restricciones, drivers, decisiones y escenarios coherentes. |
+| Arquitectura | Cuatro documentos | Distinguir estilo, enfoque, componentes y estado de implementación. |
+| Diseño interno | Módulo de búsqueda, patrones y SOLID | Clases y dependencias reales, con contratos y errores explicados. |
+| C4 | Cuatro niveles | Cada vista amplía un elemento identificado en la anterior. |
+| Evidencia | Trazabilidad y límites | Separar verificaciones actuales, históricas y pendientes. |
+| Tecnología | Boilerplate Dart | Ejecutar un ejemplo aislado con pruebas sin Firebase. |
 
-## Orden de trabajo
+## Organización
+Los documentos de diseño se encuentran en `docs/03-diseno-de-software/diseno-interno/`. Los diagramas editables están en `img/fuentes/`. El ejemplo académico está en `tecnologia/boilerplate-clean-architecture/`.
 
-1. Levantar actores, alcance y flujos críticos.
-2. Priorizar integridad, seguridad, tiempo real y recuperabilidad.
-3. Resolver el diseño base y registrar ambigüedades en ADR.
-4. Modelar datos, estados, transacciones y contratos.
-5. Revisar navegación, trazabilidad y coherencia del entregable.
-6. Publicar los archivos con un commit individual por archivo.
+## Orden de trabajo y definición de terminado
+1. Contrastar la implementación con la documentación anterior.
+2. Incorporar el recojo en el punto indicado y el problema de vivir lejos de un paradero.
+3. Documentar capas y flujos reales sin atribuirles propuestas aún pendientes.
+4. Revisar diagramas, enlaces y el ejemplo ejecutable.
+5. Publicar un commit por archivo, según instrucción del propietario.
 
-Este orden describe el trabajo del entregable; no inventa fechas de reuniones, aprobación de la docente ni un historial de ejecución del producto.
+La documentación debe poder recorrerse desde el README hasta el código del ejemplo sin cambiar de tecnologías ni confundir demo con producción. No se inventan reuniones ni aceptación académica. La evaluación corresponde a la docente.
 
-## Definición de terminado del Sprint 01
+## Siguiente incremento
+Obtener rutas de forma independiente en el servidor, sincronizar la vista previa de tarifas con su configuración, verificar despliegue de endpoints y ejecutar pruebas pertinentes en un teléfono real. Reservas financieras y outbox continúan como propuestas hasta su implementación.
 
-La documentación incluye las cuatro áreas de la referencia académica y sus anexos, distingue propuesta de implementación, puede consultarse en GitHub y conserva cambios individuales por archivo. La aceptación académica corresponde a la docente y no se presupone.
-
-## Siguiente incremento propuesto
-
-Implementar primero autenticación, expediente del conductor y políticas de acceso; después cotización y asignación atómica; finalmente cierre con ledger, recargas y SOS. Antes del piloto, ejecutar PV/EQ y resolver las propuestas de ADR-06. La política de privacidad, los requisitos de distribución y la viabilidad operativa del servicio requieren validación específica; este sprint no declara una autorización de operación.
-
-## Glosario
-
-| Término | Significado en MotoYa |
-|---|---|
-| Solicitud | Pedido todavía sin conductor asignado |
-| Oferta | Respuesta de un conductor a una versión del precio del pasajero |
-| Viaje | Acuerdo asignado con participantes, precio y estados |
-| Comisión | Cargo de MotoYa al conductor al terminar |
-| Recarga | Abono al saldo tras revisión humana |
-| Ledger | Libro inmutable de movimientos de saldo |
-| Reserva | Parte del saldo comprometida para un viaje, todavía sin débito |
-| Idempotencia | Repetir una operación sin repetir sus efectos |
-| Outbox | Registro durable de eventos pendientes de entrega |
-| Driver | Necesidad que condiciona decisiones de arquitectura |
-| ADR | Registro de una decisión arquitectónica y sus consecuencias |
+[Volver al índice](../../README.md)
