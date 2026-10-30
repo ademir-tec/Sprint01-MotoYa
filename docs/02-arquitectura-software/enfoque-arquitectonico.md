@@ -1,29 +1,23 @@
-# Enfoque: Clean Architecture y puertos/adaptadores
+# Enfoque arquitectónico: Arquitectura Limpia
 
-## Regla de dependencia
 
-```mermaid
-flowchart LR
-  P[Presentación: handlers / pantallas] --> A[Aplicación: casos de uso]
-  A --> D[Dominio: entidades, reglas y puertos]
-  I[Infraestructura: Firestore, rutas, FCM] --> D
-  C[Composición] --> P
-  C --> A
-  C --> I
-```
+La regla central es que las reglas internas no dependan de pantallas, Firebase o proveedores externos. Un caso de uso conoce un contrato; una implementación externa cumple ese contrato.
 
-Las flechas representan dependencias de código. En ejecución, el caso de uso llama a una interfaz cuya implementación pertenece a infraestructura. La inversión de dependencias evita que el dominio importe SDKs.
-
-| Capa | Backend propuesto | App propuesta | Restricción |
+| Capa | Carpeta real en la app | Responsabilidad | Ejemplo |
 |---|---|---|---|
-| Presentación | Handlers de comandos, validación de forma y errores | Pantallas y controladores Riverpod | No decide comisión ni autorización de negocio |
-| Aplicación | AceptarOferta, FinalizarViaje, ConfirmarRecarga | SolicitarViaje, observar viaje, enviar comando | Depende de puertos, no de proveedores concretos |
-| Dominio | Viaje, Dinero, PolíticaTarifa, estado y reglas | Modelos de lectura y contratos de servicios | No depende de Firebase, Flutter ni HTTP |
-| Infraestructura | Repositorios Firestore, GoogleRoutesAdapter, FcmAdapter | Adaptadores de Auth, funciones, ubicación y almacenamiento | Traduce formatos externos |
-| Composición | Inicialización e inyección de implementaciones | Providers y configuración de entorno | Único punto que conoce implementaciones concretas |
+| Dominio | app/lib/domain/ | Modelos, reglas y contratos | OfferService, RideRequest, FareRules |
+| Aplicación | app/lib/application/ | Coordinar acciones y resultados | RideSearchUseCase |
+| Presentación | app/lib/presentation/ | Pantallas y estado de interfaz | RideSearchController |
+| Datos / infraestructura | app/lib/data/ | Firebase, HTTP y persistencia | FirebaseOfferService, FakeOfferService |
+| Composición | app/lib/composition/ | Crear y seleccionar dependencias | offerServiceProvider |
+| Configuración | app/lib/config/ | Opciones de arranque y entorno | STANDALONE_DEMO y configuración runtime |
 
-## Ejemplo
+El panel emplea las mismas capas principales. En el backend existen domain, application, infrastructure y presentation. Sus puertos de aplicación residen en application/ports.ts: pertenecen al núcleo que los necesita, no a Firebase. No es necesario forzar todos los puertos al dominio para que la dependencia esté invertida.
 
-`FinalizarViaje` recibe `CierreViajePort`, `PoliticaComision` y `Reloj`. El caso de uso autoriza al conductor y solicita un cierre atómico. El adaptador Firestore aplica todas las lecturas y escrituras en una transacción. Un adaptador en memoria sirve para pruebas del dominio, pero no demuestra el comportamiento real de concurrencia de Firestore.
+![Dependencias principales de las capas de MotoYa](../../img/arquitectura-limpia.png)
 
-No se comparte a ciegas lógica monetaria entre Dart y TypeScript. La respuesta del servidor contiene los montos definitivos; cualquier cálculo local es una vista preliminar, sin autoridad para cobrar.
+El diagrama complementario [MotoYa: dependencias de la app](../../img/arquitectura-limpia.html) muestra las dependencias principales. Composición también conoce adaptadores concretos para seleccionarlos; las flechas de ejecución y las dependencias de código no son lo mismo. El contenido está en español; los controles fijos del visor Archify utilizan inglés.
+
+---
+
+[Volver al índice](../../README.md)
