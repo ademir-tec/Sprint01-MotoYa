@@ -1,0 +1,8 @@
+flowchart LR
+  P[Pasajero] -->|Solicita recojo y negocia| M[MotoYa]
+  C[Conductor] -->|Responde y realiza viaje| M
+  E[Personal autorizado] -->|Administra y atiende| M
+  M -->|Identidad y servicios administrados| F[Firebase]
+  M -->|Mapas y rutas| R[Proveedores cartográficos]
+  M -->|Compartir datos del viaje| W[WhatsApp y sistema de compartir]
+  M -.->|Recarga integrada sujeta a configuración| MP[Mercado Pago]
