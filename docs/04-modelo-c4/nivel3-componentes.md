@@ -1,43 +1,37 @@
-# C4 - Nivel 3: componentes del backend de comandos
+# Nivel 3: componentes de la app
 
-**Contenedor ampliado:** backend Cloud Functions del nivel 2. **Audiencia:** desarrolladores del backend. Los módulos de interfaz móvil quedan fuera de esta ampliación.
+
+**Contenedor ampliado:** app móvil. **Pregunta:** ¿qué componentes colaboran en su interior?
+
+| Componente | Responsabilidad | Colabora con |
+|---|---|---|
+| Onboarding y sesión | Acceso y recuperación del perfil | Contratos de identidad y sus adaptadores. |
+| Lugares | Ubicación, búsqueda y ruta | Contratos GPS, HTTP y servicios de mapas. |
+| Búsqueda y ofertas | Negociación y aceptación | RideSearchUseCase, OfferService. |
+| Viaje pasajero | Seguimiento y acciones del pasajero | Servicios de viaje y seguridad. |
+| Operación conductor | Disponibilidad, solicitudes y viaje | Ubicación, presencia y servicios del conductor. |
+| Perfil y billetera | Datos, saldo, movimientos y recargas | Contratos y adaptadores correspondientes. |
+| Composición | Construcción de dependencias | Providers y configuración de entorno. |
+
+El siguiente nivel amplía Búsqueda y ofertas, manteniendo continuidad entre las vistas.
+
+---
+
+[Volver al índice](../../README.md)
+
+## Diagrama
 
 ```mermaid
 flowchart TB
-  CLIENT[App móvil / panel] --> H
-  subgraph BACKEND[Backend de comandos - Cloud Functions]
-    H[Handlers: esquema, token y errores] --> AU[Autorización: rol, propiedad y cuenta]
-    H --> D[Despacho: solicitar, ofertar, asignar]
-    H --> V[Viajes: llegada, PIN, finalizar]
-    H --> C[Conductores: revisar expediente]
-    H --> B[Billetera: recargas y ajustes]
-    H --> S[Seguridad: SOS y sanciones]
-    D --> R[Puerto de rutas]
-    D --> T[Políticas de tarifa]
-    D --> TX[Puertos transaccionales]
-    V --> T
-    V --> TX
-    B --> TX
-    C --> REP[Puertos de persistencia]
-    S --> REP
-    TX --> F[Adaptadores Firestore]
-    REP --> F
-    R --> G[Adaptador Google / respaldo]
-  end
-  F --> DB[(Firestore: datos y outbox)]
-  G --> MAP[Proveedor de mapas]
-  DB --> WORKER[Procesador de eventos externo a este contenedor]
+  U[Presentación y navegación] --> O[Onboarding y sesión]
+  U --> L[Lugares y ubicación]
+  U --> Q[Búsqueda y ofertas]
+  U --> V[Viaje pasajero]
+  U --> C[Operación conductor]
+  U --> W[Perfil y billetera]
+  Q -->|Contrato| S[OfferService]
+  X[Composición] -->|Selecciona| F[FakeOfferService]
+  X -->|Selecciona| B[FirebaseOfferService]
+  F -.->|Implementa| S
+  B -.->|Implementa| S
 ```
-
-Las flechas expresan colaboración en ejecución; la implementación de los adaptadores depende de las interfaces de dominio. Todos los handlers aplican autorización antes de ejecutar casos de uso. Las verificaciones de estado y disponibilidad se repiten dentro de la transacción para evitar carreras.
-
-| Caso de uso | Colaboraciones | Límite consistente |
-|---|---|---|
-| AceptarOferta | Despacho, elegibilidad y billetera | Oferta, solicitud, viaje, participantes y reserva |
-| FinalizarViaje | Viajes y política de comisión | Viaje, movimiento, reserva, saldo y outbox |
-| ConfirmarRecarga | Billetera y autorización de panel | Recarga, comprobante único, movimiento, saldo y auditoría |
-| ActivarSOS | Seguridad y datos mínimos del viaje | Alerta y evento de aviso |
-
-Una búsqueda geográfica previa reduce candidatos, pero no asegura disponibilidad al asignar: la transacción vuelve a comprobarla. La vista de reportes puede estar retrasada; no se utiliza para autorizar gasto de saldo.
-
-**Anterior:** [contenedores](nivel2-contenedores.md). **Siguiente:** [código](nivel4-codigo.md).
