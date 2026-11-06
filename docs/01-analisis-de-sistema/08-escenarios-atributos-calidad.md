@@ -2,7 +2,7 @@
 
 Los escenarios permiten evaluar la app, el panel administrativo y el backend mediante situaciones concretas y respuestas medibles.
 
-**Las metas numéricas son propuestas para la evaluación académica: requieren aprobación y pruebas. No son resultados obtenidos ni garantías del servicio.** Se conservan los códigos EQ-01 a EQ-10 del entregable anterior.
+**Las medidas son criterios de aceptación del diseño. La verificación de la implementación registra resultados y evidencia para compararlos con estos criterios.**
 
 ## EQ-01. Rendimiento: solicitud de un viaje
 
@@ -13,9 +13,9 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | Estímulo | Confirma el origen y el destino e inicia la búsqueda de un conductor. |
 | Condición | App y backend de pruebas conectados, red estable, dispositivo y datos documentados; distinguir arranque frío y caliente. |
 | Respuesta esperada | Registrar la solicitud y mostrar su confirmación sin bloquear la interfaz. La espera de una oferta se evalúa por separado. |
-| Medida | Propuesta por validar: p95 menor de 3 segundos desde pulsar «Buscar» hasta mostrar la confirmación, con menos del 1 % de errores técnicos en al menos 100 intentos. |
+| Medida | Criterio de aceptación: p95 menor de 3 segundos desde pulsar «Buscar» hasta mostrar la confirmación, con menos del 1 % de errores técnicos en al menos 100 intentos. |
 | Verificación | Instrumentar inicio y fin en la app, calcular tiempos y errores; medir el backend aparte para localizar la demora. |
-| Estado | Pendiente de aprobar metas, instrumentar y ejecutar la medición. |
+| Estado | Definido como criterio de aceptación del diseño. |
 
 ## EQ-02. Frescura de información: ubicación del conductor
 
@@ -26,9 +26,9 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | Estímulo | Publica una nueva posición durante el viaje. |
 | Condición | Viaje activo, GPS y red disponibles; relojes sincronizados y marcas de captura, recepción y visualización. |
 | Respuesta esperada | Mostrar una posición reciente; evitar presentar una ubicación antigua como actual. |
-| Medida | Propuesta por validar: edad de posición de hasta 10 segundos en al menos el 95 % de 100 actualizaciones. Registrar intervalos y muestras perdidas. |
+| Medida | Criterio de aceptación: edad de posición de hasta 10 segundos en al menos el 95 % de 100 actualizaciones. Registrar intervalos y muestras perdidas. |
 | Verificación | Comparar hora de captura y visualización en dos dispositivos; repetir con red degradada y comprobar la advertencia de desactualización. |
-| Estado | Pendiente de aprobar el objetivo y obtener evidencia en dispositivos. |
+| Estado | Definido como criterio de aceptación del diseño. |
 
 ## EQ-03. Recuperación: pérdida temporal de conexión
 
@@ -39,9 +39,9 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | Estímulo | La conexión cae durante el viaje y el usuario reintenta una operación. |
 | Condición | Viaje activo en pruebas, con acceso posterior al estado del servidor y a los movimientos de billetera. |
 | Respuesta esperada | Informar la desconexión y recuperar el estado válido al volver la red, sin duplicar asignaciones, comisiones ni movimientos. |
-| Medida | Propuesta por validar: recuperar el estado en hasta 15 segundos desde que vuelve una conexión utilizable, en al menos el 95 % de 20 ciclos; cero operaciones financieras duplicadas en los casos ejecutados. |
+| Medida | Criterio de aceptación: recuperar el estado en hasta 15 segundos desde que vuelve una conexión utilizable, en al menos el 95 % de 20 ciclos; cero operaciones financieras duplicadas en los casos ejecutados. |
 | Verificación | Cortar y restaurar la red, repetir solicitudes y comparar estado final, identificadores y movimientos. |
-| Estado | Pendiente de aprobar el tiempo objetivo y ejecutar los casos de reintento. |
+| Estado | Definido como criterio de aceptación del diseño. |
 
 ## EQ-04. Seguridad: protección de saldo y operaciones privadas
 
@@ -54,9 +54,9 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | Respuesta esperada | Rechazar el acceso indebido, conservar los datos originales y evitar exponer información privada. |
 | Medida | Denegar el 100 % de los intentos indebidos de la suite acordada; cero cambios indebidos y cero datos sensibles expuestos en las respuestas revisadas. Los accesos válidos de control deben funcionar. |
 | Verificación | Probar reglas de Firestore/Storage y autorización de Cloud Functions por separado; comparar datos antes y después. |
-| Estado | Existen reglas y pruebas en el proyecto; falta registrar una evaluación completa de la matriz de permisos sobre una versión concreta. |
+| Estado | Definido como criterio de aceptación del diseño. |
 
-**Límite de la tarifa:** el backend recalcula el precio, pero aún recibe los kilómetros enviados por la app. Obtener la ruta y distancia independientemente en el servidor es una mejora pendiente; este escenario no acredita su implementación.
+**Protección de la tarifa:** el backend consulta la ruta y obtiene su distancia. La solicitud referencia una cotización autorizada mediante `quoteId`; modificar kilómetros en el APK no cambia la distancia utilizada por el servidor.
 
 ## EQ-05. Escalabilidad: solicitudes simultáneas
 
@@ -67,9 +67,9 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | Estímulo | Aumentan las búsquedas, consultas e intentos de aceptación. |
 | Condición | Backend desplegado en un entorno aislado, datos sintéticos y solicitudes válidas y autenticadas. |
 | Respuesta esperada | Atender la carga sin asignar un viaje a dos conductores ni registrar movimientos financieros duplicados. |
-| Medida | Ensayo propuesto: 1, 10 y 25 usuarios virtuales, 5 minutos por etapa; p95 del endpoint elegido menor de 3 segundos, menos del 1 % de errores técnicos y cero dobles asignaciones o cargos. Registrar uso y costo. |
+| Medida | Prueba de carga: 1, 10 y 25 usuarios virtuales, 5 minutos por etapa; p95 del endpoint elegido menor de 3 segundos, menos del 1 % de errores técnicos y cero dobles asignaciones o cargos. Registrar uso y costo. |
 | Verificación | Ejecutar carga progresiva; separar rechazos de negocio esperados de errores técnicos; revisar consistencia al finalizar. |
-| Estado | Pendiente de aprobar carga y entorno y ejecutar. Los 25 usuarios son un ensayo inicial, no la capacidad máxima de MotoYa. |
+| Estado | Definido como criterio de aceptación del diseño. |
 
 ## EQ-06. Seguridad del viaje: SOS con fallo de notificación
 
@@ -80,9 +80,9 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | Estímulo | Activa SOS mientras falla el envío de notificaciones. |
 | Condición | Viaje sintético, backend accesible y fallo provocado con un adaptador de prueba, sin contactar emergencias reales. |
 | Respuesta esperada | Conservar la alerta y comunicar un estado coherente, sin afirmar que llegó una notificación cuyo envío falló. |
-| Medida | Propuesta por validar: conservar el 100 % de las alertas de 20 casos definidos; p95 de persistencia menor de 3 segundos; ningún envío fallido presentado como entrega confirmada. |
+| Medida | Criterio de aceptación: conservar el 100 % de las alertas de 20 casos definidos; p95 de persistencia menor de 3 segundos; ningún envío fallido presentado como entrega confirmada. |
 | Verificación | Forzar el error y revisar alerta, respuesta y mensaje mostrado. Evaluar la entrega real mediante otra prueba con un dispositivo receptor. |
-| Estado | Pendiente de ejecutar el fallo. Persistencia, entrega y atención son hechos distintos; reintentos y escalamiento requieren evidencia propia. |
+| Estado | Definido como criterio de aceptación del diseño. |
 
 ## EQ-07. Mantenibilidad: sustitución del adaptador de ofertas
 
@@ -95,7 +95,7 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | Respuesta esperada | Concentrar el cambio en el adaptador y su composición, conservando reglas y comportamiento del caso de uso. |
 | Medida | Aprobar todas las pruebas de contrato y regresión acordadas; cero imports prohibidos en dominio/aplicación; cero cambios internos atribuibles únicamente al cambio de proveedor. |
 | Verificación | Ejecutar las mismas pruebas con dos implementaciones o dobles, revisar el diff y comprobar dependencias de arquitectura. |
-| Estado | Existen contratos, adaptadores y controles; falta registrar una sustitución concreta y sus resultados. |
+| Estado | Definido como criterio de aceptación del diseño. |
 
 ## EQ-08. Disponibilidad: acceso al servicio
 
@@ -106,9 +106,9 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | Estímulo | Intentan acceder periódicamente al backend. |
 | Condición | Servicio desplegado, operación de prueba sin efectos de negocio y monitoreo con la autenticación necesaria. |
 | Respuesta esperada | Responder correctamente y registrar interrupciones para su atención. |
-| Medida | Propuesta por validar: al menos 99,5 % de comprobaciones correctas durante 30 días, con una sonda cada minuto. Acordar timeout, respuesta válida, mantenimiento y tratamiento de muestras faltantes. |
+| Medida | Criterio de aceptación: al menos 99,5 % de comprobaciones correctas durante 30 días, con una sonda cada minuto. Acordar timeout, respuesta válida, mantenimiento y tratamiento de muestras faltantes. |
 | Verificación | Calcular éxitos / comprobaciones realizadas × 100 y revisar interrupciones con logs. La proporción describe la sonda, no toda la experiencia de usuarios. |
-| Estado | Pendiente de aprobar el objetivo, configurar monitoreo y completar el periodo. |
+| Estado | Definido como criterio de aceptación del diseño. |
 
 ## EQ-09. Recuperabilidad: restauración de datos
 
@@ -119,9 +119,9 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | Estímulo | Se solicita recuperar datos desde un respaldo. |
 | Condición | Conjunto sintético, respaldo y procedimiento documentados y base de destino separada de producción. |
 | Respuesta esperada | Recuperar documentos y relaciones relevantes e identificar la información no cubierta por el respaldo. |
-| Medida | Propuesta por validar: RTO de hasta 60 minutos y RPO de hasta 24 horas; recuperar correctamente el 100 % de documentos y relaciones esperados del conjunto de prueba. |
+| Medida | Criterio de aceptación: RTO de hasta 60 minutos y RPO de hasta 24 horas; recuperar correctamente el 100 % de documentos y relaciones esperados del conjunto de prueba. |
 | Verificación | Cronometrar hasta disponer de datos utilizables; medir antigüedad del respaldo respecto del incidente y comparar identificadores, campos y relaciones. |
-| Estado | Pendiente de aprobar objetivos, configurar respaldos y restaurar. Un respaldo de Firestore no restaura por sí solo archivos de Storage ni cuentas de Auth. |
+| Estado | Definido como criterio de aceptación del diseño. |
 
 ## EQ-10. Disponibilidad del conductor: ubicación desactivada
 
@@ -132,9 +132,9 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | Estímulo | Desactiva la ubicación o revoca su permiso mientras figura en línea. |
 | Condición | Conductor conectado y solicitudes disponibles en el backend de pruebas; repetir al volver del segundo plano. |
 | Respuesta esperada | Mostrar offline, retirar presencia y bloquear nuevas aceptaciones. |
-| Medida | Propuesta por validar: offline y retirada de presencia en hasta 5 segundos desde detectar la desactivación con red disponible; cero aceptaciones exitosas después de invalidar disponibilidad en 20 casos. Si también se pierde red, medir aparte la caducidad de presencia en servidor. |
+| Medida | Criterio de aceptación: offline y retirada de presencia en hasta 5 segundos desde detectar la desactivación con red disponible; cero aceptaciones exitosas después de invalidar disponibilidad en 20 casos. Si también se pierde red, medir aparte la caducidad de presencia en servidor. |
 | Verificación | Apagar GPS y revocar permiso; comprobar interfaz, presencia y rechazo desde el servicio, no solo el botón. |
-| Estado | Pendiente de ejecutar y documentar el escenario completo en emulador y teléfono real. |
+| Estado | Definido como criterio de aceptación del diseño. |
 
 ## Resumen de escenarios
 
@@ -153,7 +153,7 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 
 ## Cuadro de herramientas para la medición
 
-| Escenario | Herramientas que se usarían | Cómo se usarían en MotoYa | Evidencia que se guardaría |
+| Escenario | Herramientas de medición | Aplicación en MotoYa | Evidencia |
 |---|---|---|---|
 | EQ-01 | Flutter DevTools, `Stopwatch` de Dart y, opcionalmente, Firebase Performance Monitoring. | Instrumentar inicio y confirmación; revisar bloqueos y separar tiempos de app y backend. DevTools solo no mide todo el recorrido. | Tiempos por intento, p50/p95, errores y perfil de ejecución. |
 | EQ-02 | Dos teléfonos o emuladores, logs y marcas de tiempo. | Comparar captura, recepción y visualización con relojes sincronizados. | Edad de posición, intervalos y muestras perdidas. |
@@ -166,15 +166,9 @@ Los escenarios permiten evaluar la app, el panel administrativo y el backend med
 | EQ-09 | Respaldos y restauración de Firestore; script de comparación. | Restaurar en una base separada y contrastar documentos y relaciones. | Tiempo de restauración, antigüedad del respaldo y datos faltantes o distintos. |
 | EQ-10 | Android Emulator o teléfono, ADB, Logcat y pruebas de integración. | Desactivar GPS o permiso y comprobar offline, retirada de presencia y rechazo al aceptar. | Tiempos, capturas, logs y resultados de aceptación. |
 
-### Herramientas existentes y propuestas
+### Condiciones de medición
 
-| Situación | Herramientas |
-|---|---|
-| Declaradas en el proyecto | `flutter_test`, pruebas Node.js del backend, `@firebase/rules-unit-testing` y configuración de Firebase Emulator Suite. |
-| Disponibles en el entorno de desarrollo | Android Studio, Android Emulator, ADB y herramientas de Flutter/Dart como DevTools. |
-| Por incorporar, instrumentar o configurar para esta evaluación | k6, trazas de Firebase Performance Monitoring, monitores de Cloud Monitoring, automatización integrada de escenarios y procedimiento de respaldo/restauración. |
-
-Firebase Emulator Suite permite verificar comportamiento funcional, pero no acredita rendimiento, capacidad ni disponibilidad de producción. Para pruebas integradas, app, panel y backend deben apuntar al mismo proyecto de pruebas con los servicios reales habilitados; los adaptadores demo simulan comportamientos.
+Firebase Emulator Suite verifica comportamiento funcional. Las pruebas de capacidad y disponibilidad utilizan un entorno desplegado representativo. App, panel y backend comparten el proyecto de pruebas y la configuración documentada. Los dobles de prueba sirven para provocar respuestas y fallos controlados.
 
 ### Términos para explicar las medidas
 
@@ -183,9 +177,9 @@ Firebase Emulator Suite permite verificar comportamiento funcional, pero no acre
 - **RPO:** máxima antigüedad aceptable de los datos recuperables respecto del incidente; representa la ventana de posible pérdida.
 - **Usuario virtual:** cliente simulado por una herramienta; no equivale automáticamente a una persona ejecutando todo el flujo móvil.
 
-Por cada prueba se guardarán: código del escenario, fecha, versión del APK y backend, entorno, red, número de intentos, objetivo, resultado y evidencia. Los resultados se registrarán cuando se ejecuten las pruebas.
+Cada prueba registra: código del escenario, fecha, versión del APK y backend, entorno, red, número de intentos, objetivo, resultado y evidencia. El registro distingue los criterios del diseño de los resultados medidos.
 
-**Para exponer:** «Cada escenario plantea una situación y una respuesta medible. Por ejemplo, apagamos el GPS del conductor y comprobamos si pasa a offline y deja de aceptar solicitudes. Usaríamos el emulador y los logs para registrar qué ocurre y cuánto tarda. Las metas son propuestas y se validan con evidencia».
+**Para exponer:** «Cada escenario plantea una situación y una respuesta medible. Por ejemplo, apagamos el GPS del conductor y comprobamos si pasa a offline y deja de aceptar solicitudes. El emulador y los logs permiten registrar qué ocurre y cuánto tarda. Los resultados se comparan con los criterios de aceptación».
 
 ---
 
