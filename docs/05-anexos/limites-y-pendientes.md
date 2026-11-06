@@ -1,15 +1,17 @@
-# Límites de confianza y deuda pendiente
+# Límites de confianza y controles
 
+El diseño asume que un cliente puede enviar información manipulada. Las decisiones autoritativas se toman en el backend.
 
-| Tema | Situación observada | Trabajo pendiente |
+| Entrada o recurso | Control del sistema | Verificación |
 |---|---|---|
-| Distancia de tarifa | createRideRequestFor recibe km y comprueba límites geométricos | Obtener ruta independientemente en servidor. |
-| Vista previa | FareRules usa constantes locales | Sincronizar política para evitar diferencias con configuración real. |
-| Seguridad del APK | Un cliente modificado puede enviar entradas manipuladas | Fortalecer validación en servidor; Arquitectura Limpia no lo resuelve sola. |
-| Despliegue | Código local y demo no acreditan funciones publicadas | Inventariar y verificar producción antes de activarla. |
-| Eliminación de cuenta | Existe código, con antecedentes de endpoint no disponible | Verificar despliegue y flujo real antes de darlo por resuelto. |
-| Recargas integradas | Mercado Pago está contemplado en código | Configuración, habilitación y pruebas específicas. |
-| Concurrencia y recuperación | Hay pruebas y mecanismos en el proyecto | Reejecutar suites pertinentes para afirmar resultados actuales. |
+| Origen y destino | Validación de formato, cobertura y coherencia. Consulta de ruta en servidor. | Rechazar puntos inválidos y rutas fuera de cobertura. |
+| Kilómetros y tarifa | El servidor conserva y usa los valores de su cotización. | Alterar km o precio en el cliente no cambia la base autoritativa. |
+| quoteId | Propiedad, vigencia, recorrido y uso válido de la cotización. | Rechazar cotizaciones ajenas, vencidas o reutilizadas indebidamente. |
+| Saldo y comisión | Comandos autorizados y movimientos consistentes e idempotentes. | Reintentos y concurrencia no duplican cargos. |
+| GPS y presencia | Permiso local, vigencia en servidor y comprobación de elegibilidad. | La pérdida de ubicación bloquea nuevas aceptaciones. No se equipara esto a demostrar autenticidad física del GPS. |
+| Acceso al panel | Identidad, segundo factor y permisos por acción. | Probar usuarios y roles sin autorización. |
+| Claves de servicios | Backend en Secret Manager; SDK móvil con restricciones de aplicación/API. | Revisar permisos de acceso y restricciones; mantener secretos fuera de GitHub. |
+| Archivos y documentos | Acceso restringido y política de conservación. | Probar lectura ajena y eliminación conforme a la política. |
 
 ---
 
