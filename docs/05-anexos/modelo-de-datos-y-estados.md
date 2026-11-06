@@ -1,41 +1,31 @@
-# Modelo de datos existente
+# Modelo de datos y estados
 
+Cloud Firestore organiza la información de MotoYa en colecciones y documentos. Este modelo expresa el diseño de persistencia.
 
-| Colección o ruta | Uso | Observación |
+| Colección o ruta | Contenido | Control |
 |---|---|---|
-| users | Perfil y referencias operativas | Acceso según propietario y permisos. |
-| drivers | Registro, moto, estado y saldo | Datos sensibles y permisos separados. |
-| requests | Solicitudes de pasajeros | Estado y ofertas asociadas. |
-| requests/{id}/offers | Respuestas de conductores | Vinculadas a la solicitud. |
-| trips | Viajes y estados | Los participantes y el backend aplican permisos distintos. |
-| trips/{id}/private/pin | PIN privado del viaje | Lectura del pasajero; validación por servidor. |
-| trips/{id}/messages | Chat | Participantes autorizados. |
-| trips/{id}/live/driver | Posición durante el viaje | Diferente de la presencia pública aproximada. |
-| presence | Conductores disponibles | Datos aproximados y vigencia. |
-| walletMoves | Movimientos de saldo | Escrito por operaciones autorizadas del backend. |
-| topUps | Recargas | Estado de revisión o integración. |
-| config/pricing | Parámetros y campaña | La vista previa local no garantiza lectura de esta configuración. |
-| sosAlerts / complaints | Alertas y reclamos | Atención y permisos del panel. |
-| staff | Personal | Rol y estado del segundo factor. |
+| users | Perfil y referencias de la cuenta. | Propietario y personal autorizado. |
+| drivers | Conductor, moto, expediente, disponibilidad y saldo. | Campos críticos gestionados por backend. |
+| quotes | Cotización: usuario, puntos, recorrido, km, duración, tarifa, policyVersion y expiresAt. | Creación por servidor y uso sujeto a propiedad y vigencia. |
+| requests | Solicitud con quoteId, oferta, pago y estado. | Backend valida y registra valores autoritativos. |
+| requests/{id}/offers | Respuestas de conductores. | Elegibilidad y permisos del flujo. |
+| trips | Participantes, tarifa, kilómetros confiables y estado. | Transiciones y cierre autorizados. |
+| trips/{id}/private/pin | PIN de inicio. | Lectura del pasajero y validación del servidor. |
+| trips/{id}/messages | Mensajes del viaje. | Participantes autorizados. |
+| trips/{id}/live/driver | Ubicación durante el viaje. | Acceso limitado a los participantes. |
+| presence | Disponibilidad, posición operativa y vigencia. | Caducidad y validación de elegibilidad. |
+| walletMoves / topUps | Movimientos y recargas. | Acreditación y cargos desde backend. |
+| config/pricing | Parámetros, versión de política, vigencia de cotización y campaña. | Personal autorizado y validación de servidor. |
+| sosAlerts / complaints | Alertas, notificación y atención. | Participantes y personal según permisos. |
+| staff | Rol y segundo factor. | Administración autorizada. |
 
-Este inventario es una selección del código local, no una exportación de producción. Cotizaciones independientes, reservas de comisión y outbox del diseño anterior se mantienen como propuestas hasta implementar y comprobar su existencia.
+### Estados de viaje de la app
+
+El recorrido principal utiliza `enRoute` (hacia el recojo), `waiting` (espera), `onTrip` (en viaje) y `finished` (terminado). `none`, `noShow` y `driverCancelled` representan estados alternativos del modelo de interfaz.
+
+El backend autoriza cada transición según sus condiciones. La interfaz no convierte por sí sola una transición visual en una operación válida. Los nombres del modelo de interfaz no obligan a usar exactamente el mismo campo en la base de datos.
+
 
 ---
 
 [Volver al índice](../../README.md)
-
-## Estados de viaje en la app
-
-La enumeración `TripPhase` está en `app/lib/domain/features/trip/trip_controller.dart`. Estos nombres pertenecen al modelo de la app y no se atribuyen automáticamente a campos de Firestore.
-
-| Valor | Interpretación |
-|---|---|
-| none | No hay viaje representado en este estado de interfaz. |
-| enRoute | El conductor se dirige al recojo. |
-| waiting | El conductor espera al pasajero. |
-| onTrip | El viaje está en curso. |
-| finished | El viaje terminó. |
-| noShow | Se registró la ausencia del pasajero. |
-| driverCancelled | El conductor canceló. |
-
-El recorrido normal es `enRoute → waiting → onTrip → finished`. Los estados alternativos requieren sus guardas; no toda transición entre valores es válida. El backend real vuelve a autorizar cada operación y no confía en el estado mostrado por el teléfono.
