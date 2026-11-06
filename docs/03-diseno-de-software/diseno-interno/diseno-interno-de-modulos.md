@@ -1,7 +1,7 @@
 # Diseño interno: búsqueda y negociación
 
 
-Se utiliza un módulo real y acotado para demostrar la separación de responsabilidades: el pasajero busca una moto y acepta una oferta.
+Se utiliza un módulo acotado para demostrar la separación de responsabilidades: el pasajero busca una moto y acepta una oferta.
 
 ```text
 app/lib/
@@ -20,15 +20,15 @@ app/lib/
     offer_service.dart
 ```
 
-Algunos nombres de archivos reflejan la evolución de la app. La capa se determina por su contenido e imports, no únicamente por el nombre del archivo. Las carpetas antiguas de compatibilidad se explican aparte para evitar confundir exportaciones con implementaciones duplicadas.
+Cada archivo se ubica según su responsabilidad y sus dependencias. Los contratos y modelos del núcleo no importan widgets, clientes Firebase ni tipos propios de proveedores externos.
 
 | Archivo o clase | Capa | Responsabilidad | Qué no debe hacer |
 |---|---|---|---|
 | OfferService | Dominio | Definir solicitud, cambio de oferta, aceptación y cancelación | Conocer Firebase o widgets. |
-| RideRequest / DriverOffer / AcceptedRide | Dominio | Transportar datos propios del flujo | Incluir DocumentSnapshot o elementos visuales. |
+| RideRequest / DriverOffer / AcceptedRide | Dominio | Transportar quoteId, oferta y datos propios del flujo | Incluir DocumentSnapshot o elementos visuales. |
 | RideSearchUseCase | Aplicación | Coordinar búsqueda, negociación, rechazo y confirmación | Construir un cliente Firebase. |
 | RideSearchController | Presentación | Delegar acciones y reflejar estado en Riverpod | Reimplementar la negociación. |
-| FakeOfferService | Datos | Simular el contrato para demo | Presentarse como un conductor real. |
+| FakeOfferService | Datos | Simular el contrato para pruebas | Ejecutar pagos o viajes reales. |
 | FirebaseOfferService | Datos | Traducir el contrato a servicios Firebase | Definir reglas de interfaz. |
 | offerServiceProvider | Composición | Seleccionar implementación y gestionar su ciclo de vida | Decidir la tarifa de negocio. |
 
@@ -43,7 +43,9 @@ abstract interface class OfferService {
 }
 ```
 
-El caso de uso recibe OfferService. La composición selecciona FakeOfferService o FirebaseOfferService según la configuración efectiva. En el código real, la decisión utiliza liveServer; no basta con cambiar el nombre de la app para activar el backend.
+El caso de uso recibe OfferService. La composición selecciona FakeOfferService o FirebaseOfferService según la configuración efectiva. La composición del entorno de operación elige el adaptador Firebase; las pruebas seleccionan un doble del contrato.
+
+La búsqueda recibe `quoteId` de una cotización del servidor. El backend resuelve ese identificador y no toma kilómetros o tarifas calculados localmente como autoridad.
 
 ### Flujo normal
 
@@ -61,12 +63,12 @@ El caso de uso recibe OfferService. La composición selecciona FakeOfferService 
 
 | Situación | Respuesta |
 |---|---|
-| Precio fuera del rango local permitido | No enviar el cambio inválido; informar al usuario. El backend real vuelve a validar. |
+| Precio fuera de los límites de la cotización | Informar el rechazo del backend; la oferta se compara con una cotización vigente. |
 | Conductor ya ocupado | Mostrar rechazo y conservar un estado de búsqueda válido. |
 | Servicio falla | Reflejar el fallo sin inventar una asignación. |
 | Usuario cierra la búsqueda | Liberar suscripciones y recursos. |
 | Respuesta tardía después de cerrar | Evitar abrir un viaje desde un caso de uso ya descartado. |
-| Adaptador simulado activo | Informar que la experiencia corresponde a demostración. |
+| Entorno de prueba con adaptador simulado | Informar que la experiencia corresponde a una prueba. |
 
 ---
 
