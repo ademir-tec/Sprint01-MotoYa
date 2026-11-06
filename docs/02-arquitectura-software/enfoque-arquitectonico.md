@@ -11,7 +11,7 @@ La regla central es que las reglas internas no dependan de pantallas, Firebase o
 
 [Ver imagen completa](../../img/enfoque-arquitectonico-motoya.png) · [Versión vectorial ampliable](../../img/enfoque-arquitectonico-motoya.svg)
 
-El gráfico detalla las capas del backend y resume la organización de la app y el panel. Sus columnas agrupan responsabilidades para explicarlas; no representan microservicios independientes. Los archivos señalados pertenecen a las carpetas del backend indicadas en el esquema.
+El gráfico detalla las capas del backend y resume la organización de la app y el panel. Sus columnas agrupan responsabilidades para explicarlas; no representan microservicios independientes. Las carpetas señaladas expresan la organización del código del backend.
 
 | Capa del backend | Qué hace | Carpeta |
 |---|---|---|
@@ -26,14 +26,16 @@ Las flechas hacia el dominio muestran el uso de las reglas internas. La infraest
 
 ## Capas de la app móvil
 
-| Capa | Carpeta real en la app | Responsabilidad | Ejemplo |
+| Capa | Carpeta de la app | Responsabilidad | Ejemplo |
 |---|---|---|---|
 | Dominio | app/lib/domain/ | Modelos, reglas y contratos | OfferService, RideRequest, FareRules |
 | Aplicación | app/lib/application/ | Coordinar acciones y resultados | RideSearchUseCase |
 | Presentación | app/lib/presentation/ | Pantallas y estado de interfaz | RideSearchController |
 | Datos / infraestructura | app/lib/data/ | Firebase, HTTP y persistencia | FirebaseOfferService, FakeOfferService |
 | Composición | app/lib/composition/ | Crear y seleccionar dependencias | offerServiceProvider |
-| Configuración | app/lib/config/ | Opciones de arranque y entorno | STANDALONE_DEMO y configuración runtime |
+| Configuración | app/lib/config/ | Opciones de arranque y entorno | Opciones de prueba y configuración del entorno |
+
+La cotización utiliza un puerto `RoutingGateway` definido en aplicación y un adaptador de rutas en infraestructura. El caso de uso obtiene el recorrido mediante el puerto, calcula la tarifa con reglas del dominio y conserva la cotización mediante persistencia abstracta.
 
 El panel emplea las mismas capas principales. En el backend existen domain, application, infrastructure y presentation. Sus puertos de aplicación residen en application/ports.ts: pertenecen al núcleo que los necesita, no a Firebase. No es necesario forzar todos los puertos al dominio para que la dependencia esté invertida.
 
