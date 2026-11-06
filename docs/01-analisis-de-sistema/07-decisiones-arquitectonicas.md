@@ -1,15 +1,17 @@
 # Decisiones arquitectónicas
 
+Las decisiones vinculan las necesidades del proyecto con responsabilidades verificables.
 
-| ADR | Decisión | Justificación | Consecuencia y estado |
+| ADR | Decisión | Justificación | Consecuencia |
 |---|---|---|---|
-| ADR-01 | Cliente-servidor y backend administrado | Integrar identidad, datos y comandos | Implementación local; despliegue separado. |
-| ADR-02 | Arquitectura Limpia | Aislar negocio de frameworks | Capas explícitas; control estático aprobado en esta revisión. |
-| ADR-03 | Asignación y cierre transaccionales | Preservar consistencia | Backend existente; reservas de saldo y outbox del diseño anterior siguen como mejoras propuestas. |
-| ADR-04 | Recalcular y validar precios en el backend real | Reducir confianza en el cliente | Aún recibe km; cálculo independiente de ruta sigue pendiente. |
-| ADR-05 | Selección de implementaciones en composición | Facilitar demo y pruebas | Providers eligen servicios reales o simulados. |
-| ADR-06 | Acceso al panel mediante roles y segundo factor | Restringir operaciones internas | Implementación local; políticas concretas deben verificarse por comando. |
-| ADR-07 nuevo | Desconexión al perder ubicación habilitada | Evitar operar sin localización | Se bloquea aceptación; no demuestra por sí sola detección de GPS falsificado. |
+| ADR-01 | Cliente-servidor con Cloud Functions. | Centralizar validaciones y compartir datos entre app y panel. | El servidor autoriza las operaciones críticas. |
+| ADR-02 | Arquitectura Limpia. | Aislar reglas de pantallas y proveedores. | Las dependencias de código apuntan al núcleo. |
+| ADR-03 | Asignación, cierre y saldo mediante operaciones transaccionales. | Conservar consistencia ante concurrencia y reintentos. | Una asignación y un movimiento por operación válida. |
+| ADR-04 | Ruta, distancia y cotización autoritativas en servidor. | Evitar depender de kilómetros manipulados en el APK. | La app utiliza quoteId; el servidor conserva distancia, precio, política y vigencia. |
+| ADR-05 | Inyección de adaptadores desde composición. | Separar comportamiento de proveedores y facilitar pruebas. | Los dobles de pruebas cumplen los mismos contratos. |
+| ADR-06 | Permisos por rol y segundo factor en panel. | Proteger expedientes, finanzas y administración. | Cada comando verifica identidad y autorización. |
+| ADR-07 | Presencia del conductor con vigencia y control de ubicación. | Evitar nuevas asignaciones sin disponibilidad válida. | Offline al perder ubicación; el servidor rechaza presencia inválida o vencida. |
+| ADR-08 | Claves separadas por plataforma y servicio. | Limitar exposición y uso indebido. | Secret Manager para backend; restricciones por aplicación/API para SDK móvil. |
 
 ---
 
