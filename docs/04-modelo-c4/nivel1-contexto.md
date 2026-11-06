@@ -12,7 +12,7 @@
 | Firebase | Plataforma externa | Aporta identidad, datos, archivos, funciones y avisos según configuración. |
 | Proveedores cartográficos | Sistemas externos | Proporcionan mapas, lugares y rutas. |
 | WhatsApp / mecanismo de compartir | Sistema externo | Permite comunicar datos del viaje. |
-| Mercado Pago | Integración externa de recarga | Disponible en código; activación y pagos reales requieren configuración. |
+| Mercado Pago | Integración externa de recarga | Procesa recargas de saldo del conductor. |
 
 No se incluye al proveedor como autoridad que decide reglas de negocio. El pago del viaje permanece entre pasajero y conductor.
 
@@ -30,5 +30,5 @@ flowchart LR
   M -->|Identidad y servicios administrados| F[Firebase]
   M -->|Mapas y rutas| R[Proveedores cartográficos]
   M -->|Compartir datos del viaje| W[WhatsApp y sistema de compartir]
-  M -.->|Recarga integrada sujeta a configuración| MP[Mercado Pago]
+  M -.->|Recargas del conductor| MP[Mercado Pago]
 ```
